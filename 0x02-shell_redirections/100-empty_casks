@@ -1,0 +1,2 @@
+#!/bin/bash
+ls -1aA | find . -type d,f -empty
