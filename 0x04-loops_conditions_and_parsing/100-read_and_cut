@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # displays the content of the file /etc/passwd
-file="/etc/passwd"
-while IFS=':' read -r user pswd uid gid info home shell; do
+while IFS=':' read -r user _ uid _ _ home _; do
     echo "$user:$uid:$home"
-    done < $file
+    done < /etc/passwd
