@@ -3,7 +3,7 @@
 hrs="0"
 while [ $hrs -le 12 ]; do
     mins="1"
-    echo "Hours: ${hrs}"
+    echo "Hour: ${hrs}"
     while [ $mins -le 59 ]; do
 	echo "$mins"
 	mins=$(( mins+1 ))
