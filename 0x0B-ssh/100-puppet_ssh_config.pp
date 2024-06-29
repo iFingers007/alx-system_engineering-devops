@@ -4,7 +4,7 @@ file { '/etc/ssh/ssh_config':
   ensure  => present,
   content => "
   # Configures file
-  host *\n
+  host*\n
   PasswordAuthentication no\n
   IdentityFile /etc/ssh/~/.ssh/school\n
   "
