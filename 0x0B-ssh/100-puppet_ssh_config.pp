@@ -2,23 +2,10 @@
 
 file { '/etc/ssh/ssh_config':
   ensure  => present
+  content => "
+  # Configuration of client
+  host *
+  PasswordAuthentication no
+  IdentityFile ~/.ssh/school
+  "
 }
-
-file_line { 'host_line':
-  ensure => present,
-  path   => '/etc/ssh/ssh_config',
-  line   => 'host *\n',
-}
-
-file_line { 'password':
-  ensure => present,
-  path   => '/etc/ssh/ssh_config',
-  line   => 'PasswordAuthentication no\n'
-}
-
-file_line { 'identity':
-  ensure => present,
-  path   => '/etc/ssh/ssh_config',
-  line   => '~/.ssh/school'
-}
-
