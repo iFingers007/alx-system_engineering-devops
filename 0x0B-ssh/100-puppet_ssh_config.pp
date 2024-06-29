@@ -19,6 +19,6 @@ file_line { 'password':
 file_line { 'identity':
   ensure => present,
   path   => '/etc/ssh/ssh_config',
-  line   => '/etc/ssh/~/.ssh/school'
+  line   => '~/.ssh/school'
 }
 
