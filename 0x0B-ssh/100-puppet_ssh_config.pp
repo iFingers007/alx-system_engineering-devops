@@ -1,7 +1,7 @@
 # set up your client SSH configuration file
 
-file_path = '/etc/ssh/ssh_config'
-file { $file_path
+
+file { '/etc/ssh/ssh_config':
   ensure  => present,
   content => "
   # Configures file
