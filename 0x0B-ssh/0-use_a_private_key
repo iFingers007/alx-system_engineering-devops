@@ -4,4 +4,4 @@
 PRIVATE_KEY="~/.ssh/school"
 USER="ubuntu"
 
-ssh -i "$PRIVATE_KEY" "$USER@$HOST"
+ssh -i "$PRIVATE_KEY" "$USER"
