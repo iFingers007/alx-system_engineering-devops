@@ -6,9 +6,22 @@ sudo apt-get install nginx -y
 
 echo "Hello World!" > /var/www/html/index.html
 
-sed -i 's|#\?listen .*;|listen 80;|' /etc/nginx/sites-available/default
-sed -i 's|#\?root .*;|root /var/www/html;|' /etc/nginx/sites-available/default
-sed -i 's|#\?index .*;|index index.html;|' /etc/nginx/sites-available/default
+if ! grep -q "listen 80;" /etc/nginx/sites-available/default; then
+    sed -i 's|#\?listen .*;|listen 80;|' /etc/nginx/sites-available/default
+fi
+
+if ! grep -q "root /var/www/html;" /etc/nginx/sites-available/default; then
+    sed -i 's|#\?root .*;|root /var/www/html;|' /etc/nginx/sites-available/default
+fi
+
+if ! grep -q "index index.html;" /etc/nginx/sites-available/default; then
+    sed -i 's|#\?index .*;|index index.html;|' /etc/nginx/sites-available/default
+fi
+
+if ! nginx -t; then
+    echo "Nginx configuration test failed."
+    exit 1
+fi
 
 /etc/init.d/nginx restart
 
