@@ -1,35 +1,19 @@
 #!/usr/bin/env bash
-# Install nginx on a system and configures it
+# Installing Nginx Web Server and Serving HTML page
+#!/usr/bin/env bash
+# automate installation and set up of nginx web server, redirection
+# and custom error messages
 
 sudo apt-get update -y
+
 sudo apt-get install nginx -y
 
-echo "Hello World!" > /var/www/html/index.html
+sudo ufw allow 'Nginx HTTP'
 
-if ! grep -q "listen 80;" /etc/nginx/sites-available/default; then
-    sed -i 's|#\?listen .*;|listen 80;|' /etc/nginx/sites-available/default
-fi
+sudo chown -R $USER:$USER /var/www
 
-if ! grep -q "root /var/www/html;" /etc/nginx/sites-available/default; then
-    sed -i 's|#\?root .*;|root /var/www/html;|' /etc/nginx/sites-available/default
-fi
+sudo chmod -R 755 /var/www
 
-if ! grep -q "index index.html;" /etc/nginx/sites-available/default; then
-    sed -i 's|#\?index .*;|index index.html;|' /etc/nginx/sites-available/default
-fi
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
-if ! nginx -t; then
-    echo "Nginx configuration test failed."
-    exit 1
-fi
-
-/etc/init.d/nginx restart
-
-if curl -sI http://localhost | grep -q "200 OK"; then
-    echo "Succesful"
-else
-    echo "failed"
-    exit 1
-fi
-
-
+service nginx start
