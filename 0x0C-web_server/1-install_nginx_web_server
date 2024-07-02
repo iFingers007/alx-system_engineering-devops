@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Install nginx on a system and configures it
+
+sudo apt-get update -y
+sudo apt-get install nginx -y
+
+echo "Hello World!" > /var/www/html/index.html
+
+sed -i 's|#\?listen .*;|listen 80;|' /etc/nginx/sites-available/default
+sed -i 's|#\?root .*;|root /var/www/html;|' /etc/nginx/sites-available/default
+sed -i 's|#\?index .*;|index index.html;|' /etc/nginx/sites-available/default
+
+/etc/init.d/nginx restart
+
+if curl -sI http://localhost | grep -q "200 OK"; then
+    echo "Succesful"
+else
+    echo "failed"
+    exit 1
+fi
+
+
