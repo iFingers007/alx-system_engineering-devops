@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Install nginx on a system and configures it
+
+set -e
+
+# Update package list and install Nginx
+sudo apt-get update -y
+sudo apt-get install nginx -y
+
+# Create the HTML file
+echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
+
+# Ensure correct permissions for Nginx log directory
+sudo chown -R www-data:www-data /var/log/nginx
+
+if ! grep -q "listen 80;" /etc/nginx/sites-available/default; then
+    sudo sed -i 's|#\?listen .*;|listen 80;|' /etc/nginx/sites-available/default
+fi
+
+if ! grep -q "root /var/www/html;" /etc/nginx/sites-available/default; then
+    sudo  sed -i 's|#\?root .*;|root /var/www/html;|' /etc/nginx/sites-available/default
+fi
+
+if ! grep -q "index index.html;" /etc/nginx/sites-available/default; then
+    sudo sed -i 's|#\?index .*;|index index.html;|' /etc/nginx/sites-available/default
+fi
+
+if ! grep -q "location /redirect_me" /etc/nginx/sites-available/default; then
+    sudo sed -i '/server {/a \\n location /redirect_me {\n return 301 https://www.google.com;\n }\n' /etc/nginx/sites-available/default
+fi
+
+if ! nginx -t; then
+    echo "Nginx configuration test failed."
+    exit 1
+fi
+
+/etc/init.d/nginx restart
+
+if curl -sI http://localhost | grep -q "200 OK"; then
+    echo "Succesful"
+else
+    echo "failed"
+    exit 1
+fi
+
+
