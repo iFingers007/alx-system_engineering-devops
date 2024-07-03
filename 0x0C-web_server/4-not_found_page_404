@@ -19,7 +19,7 @@ replace_str="server_name _;\n\n\terror_page 404 \/custom_404.html;\n\tlocation =
 sudo sed -i "s/server_name _;/$replace_str/" /etc/nginx/sites-enabled/default
 
 
-echo "Hello World!\n" | sudo tee /var/www/html/index.html
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
 replace_str="server_name _;\n\n\tlocation \/redirect_me {\n\t\treturn 301 https:\/\/www.google.com;\n\t}"
 
