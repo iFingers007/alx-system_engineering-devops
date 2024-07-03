@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Fix Apache Server
+
+sudo apt-get update
+sudo apt-get install -y apache2
+echo "Hello Holberton" > /var/www/html/index.html
+
+cat <<EOT > /etc/apache2/sites-available/000-default.conf
+<VirtualHost *:80>
+    DocumentRoot /var/www/html
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+EOT
+
+sudo service apache2 start
