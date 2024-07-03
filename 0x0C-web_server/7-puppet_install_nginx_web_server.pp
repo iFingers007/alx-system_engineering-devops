@@ -1,67 +1,25 @@
 # Puppet manifest to install and configure Nginx
 
-class nginx_setup {
-
-  package { 'nginx':
-    ensure => installed,
+package { 'nginx':
+  ensure => present,
   }
 
-  service { 'nginx':
-    ensure     => running,
-    enable     => true,
-    require    => Package['nginx'],
+  exec { 'install':
+    command => 'sudo apt-get update -y; sudo apt-get -y nginx',
+    provider => shell
   }
 
-  # Create the index.html file with "Hello World!" content
-  file { '/var/www/html/index.html':
-    ensure  => file,
-    content => 'Hello World!',
-    require => Package['nginx'],
+  exec { 'Hello':
+    command => 'echo "Hello World!" | sudo tee /var/www/html/index.html',
+    provider => shell,
   }
 
-  # Create the custom 404 error page
-  file { '/var/www/html/custom_404.html':
-    ensure  => file,
-    content => 'Ceci n\'est pas une page',
-    require => Package['nginx'],
+  exec {'sudo sed -i "s/server_name _;/server_name _;\n\n\tlocation \/redirect_me {\n\t\t return 301 https:\/\/www.google.com;\n\t}" \
+/etc/nginx/sites-enabled/default':
+  provider => shell,
   }
 
-  # Configure the Nginx default site directly in the manifest
-  file { '/etc/nginx/sites-available/default':
-    ensure  => file,
-    content => '
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    root /var/www/html;
-    index index.html;
-
-    server_name _;
-
-    location /redirect_me {
-        return 301 https://www.google.com;
-    }
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-
-    error_page 404 /custom_404.html;
-    location = /custom_404.html {
-        internal;
-    }
-}
-',
-    require => Package['nginx'],
-    notify  => Service['nginx'],
+  exec { 'start':
+    command => 'sudo service nginx restart',
+    provider =>shell,
   }
-
-  # Ensure the configuration is symlinked to sites-enabled
-  file { '/etc/nginx/sites-enabled/default':
-    ensure => link,
-    target => '/etc/nginx/sites-available/default',
-    require => File['/etc/nginx/sites-available/default'],
-  }
-
-}
