@@ -5,12 +5,12 @@ package { 'nginx':
   }
 
   exec { 'install':
-    command => 'sudo apt-get update -y; sudo apt-get -y nginx',
+    command  => 'sudo apt-get update -y; sudo apt-get -y nginx',
     provider => shell
   }
 
   exec { 'Hello':
-    command => 'echo "Hello World!" | sudo tee /var/www/html/index.html',
+    command  => 'echo "Hello World!" | sudo tee /var/www/html/index.html',
     provider => shell,
   }
 
@@ -20,6 +20,6 @@ package { 'nginx':
   }
 
   exec { 'start':
-    command => 'sudo service nginx restart',
+    command  => 'sudo service nginx restart',
     provider =>shell,
   }
