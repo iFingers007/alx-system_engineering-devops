@@ -1,6 +1,6 @@
 #!/bin/env bash
-
 # Install Nginx if it is not already installed
+
 sudo apt-get update -y
 
 sudo apt-get install -y nginx
@@ -16,24 +16,10 @@ echo "Hello World!" | sudo tee /var/www/html/index.html
 HEADER_NAME="X-Served-By"
 
 # Get the hostname of the server
-HOSTNAME=$(hostname)
+# HOSTNAME=$(hostname)
 
-CONFIG_FILE="/etc/nginx/conf.d/new.conf"
+if ! grep -q "add_header X-Served-By" /etc/nginx/sites-available/default; then
+    sudo sed -i '/^\s*server\s*{/a \\n    add_header X-Served-By $hostname;\n' /etc/nginx/sites-available/default
+fi
 
-sudo cp /etc/nginx/sites-enabled/default $CONFIG_FILE
-
-sudo tee $CONFIG_FILE > /dev/null <<EOL
-server {
-    listen 80;
-    listen [::]:80;
-
-    server_name $HOSTNAME;
-
-    location / {
-        add_header X-Served-By $HOSTNAME;
-        try_files \$uri \$uri/ =404;
-    }
-}
-EOL
-
-sudo systemctl reload nginx
+sudo /etc/init.d/nginx restart
