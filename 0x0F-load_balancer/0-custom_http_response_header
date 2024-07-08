@@ -1,6 +1,8 @@
 #!/bin/env bash
 # Install Nginx if it is not already installed
 
+ADD_HEADER="\\\tadd_header X-Served-By $HOSTNAME;"
+
 sudo apt-get update -y
 
 sudo apt-get install -y nginx
@@ -13,8 +15,6 @@ sudo chmod -R 755 /var/www
 
 echo "Hello World!" | sudo tee /var/www/html/index.html
 
-replace_str="location \/ {\n\tadd_header X-Served-By $hostname;\n"
+sudo sed -i "27i $ADD_HEADER" /etc/nginx/sites-available/default
 
-sudo sed -i "s/location \//$replace_str/" /etc/nginx/sites-available/default
-
-sudo /etc/init.d/nginx restart
+sudo service nginx restart
