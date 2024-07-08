@@ -20,7 +20,7 @@ HOSTNAME=$(hostname)
 
 CONFIG_FILE="/etc/nginx/conf.d/new.conf"
 
-sudo cp /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default.bk
+sudo cp /etc/nginx/sites-enabled/default $CONFIG_FILE
 
 sudo tee $CONFIG_FILE > /dev/null <<EOL
 server {
