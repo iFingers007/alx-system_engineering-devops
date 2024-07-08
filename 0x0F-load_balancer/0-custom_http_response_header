@@ -23,7 +23,7 @@ echo "Hello World!" | sudo tee /var/www/html/index.html
 sudo sed -i "30i $ADD301_REDIRECT" /etc/nginx/sites-available/default
 
 # Any page that errors shows this new custom_404.html page (uncomment and replace code)
-echo "Ceci n'est pas une page" | sudo tee /usr/share/nginx/html/custom_404.html
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
 sudo sed -i "s@$PATTERN@$ADD404_NOTFOUND@" /etc/nginx/sites-available/default
 
 sudo sed -i "27i $ADD_HEADER" /etc/nginx/sites-available/default
