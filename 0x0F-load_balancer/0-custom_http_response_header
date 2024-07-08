@@ -13,13 +13,8 @@ sudo chmod -R 755 /var/www
 
 echo "Hello World!" | sudo tee /var/www/html/index.html
 
-HEADER_NAME="X-Served-By"
+replace_str="location \/ {\n\tadd_header X-Served-By $hostname;\n"
 
-# Get the hostname of the server
-# HOSTNAME=$(hostname)
-
-if ! grep -q "add_header X-Served-By" /etc/nginx/sites-available/default; then
-    sudo sed -i '/^\s*server\s*{/a \\n    add_header X-Served-By $hostname;\n' /etc/nginx/sites-available/default
-fi
+sudo sed -i "s/location \//$replace_str/" /etc/nginx/sites-available/default
 
 sudo /etc/init.d/nginx restart
