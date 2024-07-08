@@ -14,9 +14,10 @@ package { 'nginx':
     provider => shell,
   }
 
-  exec {'sudo sed -i "s/server_name _;/server_name _;\n\n\tlocation \/redirect_me {\n\t\t return 301 https:\/\/www.google.com;\n\t}" \
-/etc/nginx/sites-enabled/default':
-  provider => shell,
+  exec { 'configure redirect':
+    command => 'sudo sed -i "s/server_name _;/server_name _;\n\n\tlocation \/redirect_me {\n\t\t return 301 https:\/\/www.google.com;\n\t}" \
+    /etc/nginx/sites-enabled/default',
+    provider => shell,
   }
 
   exec { 'start':
