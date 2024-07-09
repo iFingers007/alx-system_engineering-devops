@@ -10,7 +10,7 @@ exec { 'install':
 }
 
 file_line { 'Add_Header':
-  path  => '/etc/nginx/sites-available/default',
+  path  => '/etc/nginx/sites-enabled/default',
   match => 'location / {',
   line  => 'location / {\n\tadd_header X-Served-By \"${hostname}\";',
 }
