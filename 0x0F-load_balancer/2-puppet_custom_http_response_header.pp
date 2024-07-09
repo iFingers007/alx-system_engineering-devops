@@ -10,7 +10,8 @@ exec { 'install':
 }
 
 exec { 'Add_Header':
-  command => 'sudo sed -i "27i \\\tadd_header X-Served-By \"${HOSTNAME}\";" /etc/nginx/sites-available/default'
+  command => 'sudo sed -i "27i \\\tadd_header X-Served-By \"${HOSTNAME}\";" /etc/nginx/sites-available/default',
+}
   
 # file_line { 'Add_Header':
 #  path  => '/etc/nginx/sites-enabled/default',
