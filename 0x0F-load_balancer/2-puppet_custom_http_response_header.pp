@@ -10,14 +10,14 @@ exec { 'install':
 }
 
 exec { 'Add_Header':
-  command => 'sudo sed -i "27i \\\tadd_header X-Served-By \"${HOSTNAME}\";" /etc/nginx/sites-available/default',
+  command  => "sudo sed -i '55i \\\t\\\tadd_header X-Served-By \"${hostname}\";' /etc/nginx/sites-available/default",
+  provider => shell,
 }
-  
-# file_line { 'Add_Header':
-#  path  => '/etc/nginx/sites-enabled/default',
-#  match => 'location / {',
-#  line  => 'location / {\n\tadd_header X-Served-By \"${hostname}\";',
-#}
+
+exec { 'config':
+  command  => 'sudo nginx -t',
+  provider => shell,
+}
 
 exec { 'start':
   command  => 'sudo service nginx restart',
