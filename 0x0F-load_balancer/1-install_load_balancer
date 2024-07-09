@@ -22,7 +22,7 @@ backend web_servers
 	balance roundrobin
 	server 266471-web-01 100.24.244.124 check
 	server 266471-web-02 18.210.33.175 check
-" | sudo tee /etc/haproxy/haproxy.cfg > dev/null
+" | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
 # Configure to include roundrobin and two servers
 # sudo sed -i "\$a $CFG" /etc/haproxy/haproxy.cfg
 

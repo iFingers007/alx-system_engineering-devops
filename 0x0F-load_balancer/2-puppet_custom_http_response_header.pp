@@ -2,15 +2,20 @@
 
 package { 'nginx':
   ensure => present,
-  }
+}
 
-  file_line { 'Add_Header':
-    path  => '/etc/nginx/sites-available/default',
-    match => 'location /',
-    line  => 'location /\n\tadd_header X-Served-By \"${hostname}\";',
-    }
+exec { 'install':
+    command  => 'sudo apt-get update -y; sudo apt-get -y nginx',
+    provider => shell,
+}
 
-  exec { 'start':
-    command  => 'sudo service nginx restart',
-    provider =>shell,
-  }
+file_line { 'Add_Header':
+  path  => '/etc/nginx/sites-available/default',
+  match => 'location / {',
+  line  => 'location / {\n\tadd_header X-Served-By \"${hostname}\";',
+}
+
+exec { 'start':
+  command  => 'sudo service nginx restart',
+  provider =>shell,
+}
