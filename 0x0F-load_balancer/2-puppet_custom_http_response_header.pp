@@ -1,25 +1,17 @@
 # Puppet manifest to install and configure Nginx
 
-package { 'nginx':
+exec { 'update':
+  command => '/usr/bin/apt-get update -y',
+}
+-> package { 'nginx':
   ensure => present,
 }
-
-exec { 'install':
-  command  => 'sudo apt-get update -y; sudo apt-get -y nginx',
-  provider => shell,
+-> file_line { 'Add_Header':
+  path  => '/etc/nginx/sites-available/default',
+  match => 'server_name _;',
+  line  => 'server_name _;\n\tadd_header X-Served-By \"${hostname}\";'
 }
 
-exec { 'Add_Header':
-  command  => "sudo sed -i '55i \\\t\\\tadd_header X-Served-By \"${hostname}\";' /etc/nginx/sites-available/default",
-  provider => shell,
-}
-
-exec { 'config':
-  command  => 'sudo nginx -t',
-  provider => shell,
-}
-
-exec { 'start':
-  command  => 'sudo service nginx restart',
-  provider =>shell,
+-> exec { 'start':
+  command  => 'user/sbin/service nginx restart',
 }
