@@ -1,29 +1,26 @@
 #!/usr/bin/env bash
-# Configure server with: HAproxy version 1.5 or greater
-# Distributes request using roundrobin; sends traffic to servers: web-01 and web-02
+# Installs and configure HAproxy on your lb-01 server.
 
-# CFG="\\\nlisten appname 0.0.0.0:80\n\tmode http\n\tbalance roundrobin\n\toption httpclose\n\toption forwardfor\n\tserver 266471-web-01 100.24.244.124 check\n\tserver 266471-web-02 18.210.33.175 check\n"
+sudo apt-get update -y
 
-sudo apt-get update
-sudo apt-get install -y haproxy
+sudo apt-get install haproxy -y
 
-# Make sure HAproxy can be managed via an init script
-sudo sed -i "s/ENABLED=0/ENABLED=1/" /etc/default/haproxy
-
-# Backup original config file before attempt modifications
+cfg=\
+"
+frontend ifingers-frontend
+	 bind *:80
+	 mode http
+	 default_backend ifingers-backend
+backend ifingers-backend
+	mode http
+	balance roundrobin
+	server 266471-web-01 100.24.244.124:80 check
+	server 266471-web-02 18.210.33.175:80 check
+"
 sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.backup
 
-echo "
-frontend frontend_proxying
-	 bind *:80
-	 default_backend web_servers
+echo "$cfg" | sudo tee -a /etc/haproxy/haproxy.cfg
 
-backend web_servers
-	balance roundrobin
-	server 266471-web-01 100.24.244.124 check
-	server 266471-web-02 18.210.33.175 check
-" | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
-# Configure to include roundrobin and two servers
-# sudo sed -i "\$a $CFG" /etc/haproxy/haproxy.cfg
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 
-sudo service haproxy start
+sudo service haproxy restart
