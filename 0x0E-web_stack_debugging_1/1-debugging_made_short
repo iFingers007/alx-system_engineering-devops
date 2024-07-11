@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 # Fix nginx installation to solve connection issues
-
 sudo apt-get update -y
-
 sudo apt-get install nginx -y
-
 sudo service nginx restart
-
-systemctl enable nginx
