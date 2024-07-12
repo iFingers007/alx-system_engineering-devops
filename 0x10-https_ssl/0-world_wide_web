@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Display informations about subdomains
+
+domain="$1"
+subdomain="${2:-}"
+
+get_info () {
+    local fulldomain=$1
+    local subdomain=$2
+#    local full_domain="${subdomain}.${domain}"
+
+    result=$(dig +short "$fulldomain" | awk 'NR == 1 {print}')
+
+    if [ -z "$result" ]; then
+	echo "No record Found"
+    else
+	record_type="A"
+	echo "The subdomain $subdomain is a $record_type record and points to $result"
+    fi
+	
+}
+
+main () {
+    if [ -z "$subdomain" ]; then
+        # Default subdomains to check
+        subdomains=("www" "lb-01" "web-01" "web-02")
+        for sub in "${subdomains[@]}"; do
+            get_info "$sub.$domain" "$sub"
+        done
+    else
+        get_info "$subdomain.$domain" "$subdomain"
+    fi
+#    get_info "$domain" "$subdomain"
+}
+
+main
