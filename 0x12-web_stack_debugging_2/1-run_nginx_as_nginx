@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Fix container so that Nginx is running as the nginx user.
+
+sudo useradd -r -d /nonexistent -s /sbin/nologin nginx
+
+NGINX_CONF="/etc/nginx/nginx.conf"
+
+sudo sed -i 's/^user .*/user nginx;/' $NGINX_CONF
+sudo sed -i 's/listen 80;/listen 8080;/' /etc/nginx/sites-available/default
+
+sudo service nginx restart
