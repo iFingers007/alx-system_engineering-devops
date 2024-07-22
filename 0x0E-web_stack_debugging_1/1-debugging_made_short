@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # Fix nginx installation to solve connection issues
-sudo apt-get update -y
-sudo apt-get install nginx -y
-sudo service nginx restart
+sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+service nginx restart
+pkill -o nginx
