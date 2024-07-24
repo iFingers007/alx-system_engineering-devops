@@ -8,4 +8,8 @@ NGINX_CONF="/etc/nginx/nginx.conf"
 sudo sed -i 's/^user .*/user nginx;/' $NGINX_CONF
 sudo sed -i 's/listen 80;/listen 8080;/' /etc/nginx/sites-available/default
 
-sudo service nginx restart
+sudo chown -R nginx:nginx /var/lib/nginx
+sudo chown -R nginx:nginx /var/log/nginx
+sudo chown -R nginx:nginx /var/www/html
+
+nginx -g 'daemon off;'
