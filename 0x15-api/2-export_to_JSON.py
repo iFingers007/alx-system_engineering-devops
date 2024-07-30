@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Restful API Module"""
 
-import csv
+import json
 import requests
 import sys
 
@@ -23,7 +23,7 @@ def get_employee_data(employee_id):
     return user_data, todo_data
 
 
-def exportCsv(employee_id):
+def exportJson(employee_id):
     """
     Function for exporting to csv
 
@@ -37,20 +37,25 @@ def exportCsv(employee_id):
     name = user_data.get('username')
 
 
-    csvData = [
-        [userId, name, task.get('completed'), task.get('title')]
-        for task in todo_data
-    ]
+    jsonData = {
+        userId: [
+            {
+                "task": task.get('title'),
+                "completed": task.get('completed'),
+                "name":name
+            }
+            for task in todo_data
+        ]
+    }
 
-    # Define the CSV filename
-    csv_filename = f'{userId}.csv'
+    # Define the Json filename
+    json_filename = f'{userId}.json'
 
-    # Write to CSV file
-    with open(csv_filename, mode='w', newline='') as csvfile:
-        csv_writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        csv_writer.writerows(csvData)
+    # Write to Json file
+    with open(json_filename, mode='w', newline='') as jsonFile:
+        json.dump(jsonData, jsonFile, indent=4)
 
-    print(f'Data exported to {csv_filename}')
+    print(f'Data exported to {json_filename}')
 
 
 if __name__ == '__main__':
@@ -66,4 +71,4 @@ if __name__ == '__main__':
         print('Please provide a valid employee ID (integer).')
         sys.exit(1)
 
-    exportCsv(employee_id)
+    exportJson(employee_id)
