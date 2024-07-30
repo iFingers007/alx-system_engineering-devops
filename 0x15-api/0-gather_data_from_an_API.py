@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """Restful API Module"""
 
-import requests, sys
+import requests
+import sys
 
 
 def get_employee_data(employee_id):
@@ -19,6 +20,7 @@ def get_employee_data(employee_id):
     todo_data = todo_response.json()
 
     return user_data, todo_data
+
 
 def display_progress(employee_id):
     """
@@ -40,11 +42,15 @@ def display_progress(employee_id):
     number_of_done_tasks = len(done_tasks)
 
     # Print the progress
-    print(f'Employee {employee_name} is done with tasks({number_of_done_tasks}/{total_tasks}):')
+    print(
+        f'Employee {employee_name} is done with tasks
+        ({number_of_done_tasks}/{total_tasks}):
+        ')
 
     # Print the titles of the completed tasks
     for task in done_tasks:
         print(f'\t {task.get("title")}')
+
 
 if __name__ == '__main__':
     # Ensure an employee ID is provided
