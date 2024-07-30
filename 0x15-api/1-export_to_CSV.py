@@ -35,8 +35,6 @@ def exportCsv(employee_id):
 
     userId = user_data.get('id')
     name = user_data.get('username')
-
-
     csvData = [
         [userId, name, task.get('completed'), task.get('title')]
         for task in todo_data

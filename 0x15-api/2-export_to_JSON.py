@@ -35,14 +35,12 @@ def exportJson(employee_id):
 
     userId = user_data.get('id')
     name = user_data.get('username')
-
-
     jsonData = {
         userId: [
             {
                 "task": task.get('title'),
                 "completed": task.get('completed'),
-                "name":name
+                "username": name
             }
             for task in todo_data
         ]
@@ -53,7 +51,7 @@ def exportJson(employee_id):
 
     # Write to Json file
     with open(json_filename, mode='w', newline='') as jsonFile:
-        json.dump(jsonData, jsonFile, indent=4)
+        json.dump(jsonData, jsonFile)
 
     print(f'Data exported to {json_filename}')
 
