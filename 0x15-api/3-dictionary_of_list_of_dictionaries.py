@@ -51,8 +51,6 @@ def exportAll():
     with open(json_filename, mode='w') as jsonFile:
         json.dump(jsonData, jsonFile)
 
-    print(f'Data exported to {json_filename}')
-
 
 if __name__ == '__main__':
     exportAll()
