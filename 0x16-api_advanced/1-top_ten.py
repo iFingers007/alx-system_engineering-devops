@@ -1,23 +1,29 @@
 #!/usr/bin/python3
-"""Module for RedditApi for Python"""
+"""Queries the Reddit API and prints the titles of
+the first 10 hot posts listed for a given subreddit.
+"""
 import requests
 
 
 def top_ten(subreddit):
-    """To get the number of subscribers"""
+    """Queries the Reddit API for the titles of the top 10 hot posts
+    in a subreddit.
+    Args:
+        subreddit (str): The name of the subreddit to query.
+    """
 
-    url = f'https://www.reddit.com/dev/api/https://www.reddit.com/r/{subreddit}/about.json'
-    headers = {'User-Agent': 'subreddit-subscriber-checker/0.1'}
-    params = {'limit': 10}
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    headers = {"User-Agent': 'subreddit-subscriber-checker/0.1"}
+    params = {"limit": 10}
 
-    try:
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
-        if response.status_code == 200:
+    response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+    if response.status_code == 200:
+        try:
             data = response.json()
-            posts = data['data']['children']
+            posts = data["data"]["children"]
             for post in posts:
-                print(post['data']['title'])
-        else:
+                print(post["data"]["title"])
+        except KeyError:
             print(None)
-    except requests.RequestException:
+    else:
         print(None)
