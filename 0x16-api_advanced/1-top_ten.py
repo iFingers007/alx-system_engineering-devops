@@ -3,18 +3,21 @@
 import requests
 
 
-def number_of_subscribers(subreddit):
+def top_ten(subreddit):
     """To get the number of subscribers"""
 
     url = f'https://www.reddit.com/dev/api/https://www.reddit.com/r/{subreddit}/about.json'
     headers = {'User-Agent': 'subreddit-subscriber-checker/0.1'}
+    params = {'limit': 10}
 
     try:
-        response = requests.get(url, headers=headers, allow_redirects=False)
+        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
         if response.status_code == 200:
             data = response.json()
-            return data['data'].get('subscribers', 0)
+            posts = data['data']['children']
+            for post in posts:
+                print(post['data']['title'])
         else:
-            return 0
+            print(None)
     except requests.RequestException:
-        return 0
+        print(None)
