@@ -18,14 +18,13 @@ def top_ten(subreddit):
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'My User Agent 1.0'})
-    params = {"limit": 10}
 
-    response = requests.get(url, headers=headers, params=params, allow_redirects=False)  # noqa
+    response = requests.get(url, headers=headers)
     if response.status_code == 200:
         try:
             data = response.json()
             posts = data["data"]["children"]
-            for post in posts:
+            for post in posts[:10]:
                 print(post["data"]["title"])
         except KeyError:
             print(None)
