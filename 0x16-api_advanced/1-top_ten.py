@@ -6,10 +6,13 @@ import requests
 
 
 def top_ten(subreddit):
-    """Queries the Reddit API for the titles of the top 10 hot posts
+    """
+    Queries the Reddit API for the titles of the top 10 hot posts
     in a subreddit.
+
     Args:
         subreddit (str): The name of the subreddit to query.
+
     """
 
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
