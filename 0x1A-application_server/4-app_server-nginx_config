@@ -19,7 +19,7 @@ listen 80 default_server;
         proxy_pass http://0.0.0.0:5001/number_odd_or_even/$1;
     }
     location /api/ {
-        proxy_pass http://0.0.0.0:5002;
+        proxy_pass http://0.0.0.0:5002/api/;
     }
     error_page 404 /error_404.html;
     location = /error_404.html {
